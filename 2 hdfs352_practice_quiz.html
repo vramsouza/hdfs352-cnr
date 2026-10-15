@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDFS352: Community Needs and Resources Quiz</title>
+<style>
+    /* Basic reset and typography */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background-color: #f4f7f6;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+    header, footer {
+        background-color: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 1.5rem 1rem;
+    }
+    header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+    header h2 {
+        font-size: 1.2rem;
+        font-weight: normal;
+        color: #b8c6d1;
+    }
+    main {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1rem;
+    }
+    .quiz-container {
+        background: white;
+        width: 100%;
+        max-width: 600px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 2rem;
+    }
+    .hidden {
+        display: none !important;
+    }
+    .question-counter {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    h3.question-text {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+    }
+    .options-list {
+        list-style: none;
+    }
+    .option-btn {
+        width: 100%;
+        text-align: left;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        padding: 1rem;
+        margin-bottom: 0.8rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+    }
+    .option-btn:hover {
+        background: #e2e6ea;
+        border-color: #dae0e5;
+    }
+    .option-btn span.key-hint {
+        background: #dee2e6;
+        color: #495057;
+        font-size: 0.8rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-right: 12px;
+        font-weight: bold;
+    }
+    .feedback-section {
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+    }
+    .feedback-correct {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .feedback-wrong {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    .feedback-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    .explanation {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        width: 100%;
+    }
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+    .results-section {
+        text-align: center;
+    }
+    .score-display {
+        font-size: 4rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin: 1rem 0;
+    }
+    footer p {
+        font-size: 0.9rem;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Course: HDFS352</h1>
+    <h2>Topic: Community Needs and Resources</h2>
+</header>
+
+<main>
+    <div class="quiz-container">
+        <!-- Question View -->
+        <div id="question-view">
+            <div class="question-counter" id="counter">Question 1 of 10</div>
+            <h3 class="question-text" id="question">Question text goes here?</h3>
+            <div class="options-list" id="options">
+                <!-- Options injected by JS -->
+            </div>
+        </div>
+
+        <!-- Feedback View -->
+        <div id="feedback-view" class="hidden">
+            <div id="feedback-box" class="feedback-section">
+                <div id="feedback-title" class="feedback-title">Correct!</div>
+                <div id="explanation" class="explanation">Explanation text goes here.</div>
+                <button id="next-btn" class="btn-primary">Next (Enter)</button>
+            </div>
+        </div>
+
+        <!-- Results View -->
+        <div id="results-view" class="hidden results-section">
+            <h3 class="question-text">Quiz Complete!</h3>
+            <p>Your score is</p>
+            <div class="score-display" id="score">0 / 10</div>
+            <button id="restart-btn" class="btn-primary">Try Again</button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>Made by Dr. Ram-Souza with Gemini</p>
+</footer>
+
+<script>
+    // EDIT QUESTIONS HERE
+    // Format: question, options array (4 items), correct index (0-3), explanation string.
+    const ALL_QUESTIONS = [
+        {
+            question: "What is the primary purpose of a community needs assessment?",
+            options: [
+                "To distribute funding equally among residents",
+                "To identify gaps in services and areas for community improvement",
+                "To enforce local government regulations",
+                "To promote businesses within a specific neighborhood"
+            ],
+            correct: 1,
+            explanation: "A needs assessment systematically identifies gaps between current conditions and desired outcomes to prioritize resources."
+        },
+        {
+            question: "In the context of community assessment, what is 'secondary data'?",
+            options: [
+                "Data collected directly through new surveys",
+                "Information that is deemed less important to the community",
+                "Existing data collected by others, such as census reports",
+                "Data collected from children and adolescents"
+            ],
+            correct: 2,
+            explanation: "Secondary data refers to information that has already been collected and published by other researchers or organizations."
+        },
+        {
+            question: "Asset-Based Community Development (ABCD) primarily focuses on:",
+            options: [
+                "Identifying the major deficits and problems in a town",
+                "Relying on external experts to fix community issues",
+                "Discovering and mapping the existing strengths and resources of a community",
+                "Securing maximum federal funding for social programs"
+            ],
+            correct: 2,
+            explanation: "ABCD shifts the focus from a community's deficits to its existing strengths, skills, and resources to drive development."
+        },
+        {
+            question: "Who is considered a 'stakeholder' in a community needs assessment?",
+            options: [
+                "Only the local government officials",
+                "Only the individuals directly funding the assessment",
+                "Anyone who is affected by or has an interest in the community issue",
+                "External researchers conducting the study"
+            ],
+            correct: 2,
+            explanation: "Stakeholders are any individuals, groups, or organizations that have a vested interest in the community and its outcomes."
+        },
+        {
+            question: "What does 'social capital' refer to in community development?",
+            options: [
+                "The total financial wealth of community residents",
+                "The networks, relationships, and trust that enable a society to function effectively",
+                "The physical infrastructure like roads and community centers",
+                "Government grants allocated for social services"
+            ],
+            correct: 1,
+            explanation: "Social capital describes the value derived from social networks, shared norms, and mutual trust among community members."
+        },
+        {
+            question: "Which of the following is a quantitative method of data collection?",
+            options: [
+                "A large-scale standardized survey with numerical scales",
+                "An open-ended focus group discussion",
+                "One-on-one deep ethnographic interviews",
+                "Participant observation at a town hall meeting"
+            ],
+            correct: 0,
+            explanation: "Quantitative methods gather numerical data that can be statistically analyzed, such as scaled survey responses."
+        },
+        {
+            question: "Which of the following is the best example of an informal community resource?",
+            options: [
+                "A state-funded public health clinic",
+                "A registered non-profit organization",
+                "A neighborhood watch group formed by local parents",
+                "The local public school system"
+            ],
+            correct: 2,
+            explanation: "Informal resources are grassroots, unofficial networks or groups created organically by community members, rather than official institutions."
+        },
+        {
+            question: "What is meant by 'capacity building' in communities?",
+            options: [
+                "Constructing new buildings and housing developments",
+                "Developing the skills, resources, and abilities of a community to address its own needs",
+                "Increasing the maximum occupancy limits of community centers",
+                "Importing external workers to manage local programs"
+            ],
+            correct: 1,
+            explanation: "Capacity building empowers a community by strengthening its own ability to sustainably solve problems and manage resources."
+        },
+        {
+            question: "When are focus groups most effectively used in a needs assessment?",
+            options: [
+                "When seeking exact statistical data on income levels",
+                "When a researcher wants to observe people in their natural environment without interacting",
+                "When exploring shared experiences, attitudes, and qualitative insights interactively",
+                "When testing the physical safety of community infrastructure"
+            ],
+            correct: 2,
+            explanation: "Focus groups facilitate interactive discussion, yielding rich qualitative data about community attitudes and shared experiences."
+        },
+        {
+            question: "How does the ecological systems theory apply to community assessment?",
+            options: [
+                "It restricts focus entirely to the natural environment and wildlife",
+                "It emphasizes that individuals are influenced by interacting layers of their environment (family, community, society)",
+                "It focuses solely on the economic output of a community",
+                "It argues that genetics are the only determinant of community health"
+            ],
+            correct: 1,
+            explanation: "Ecological systems theory examines human development within nested, interactive environmental systems, from immediate families to broader societal structures."
+        }
+    ];
+
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let uiState = 'question'; // 'question', 'feedback', 'results'
+
+    // DOM Elements
+    const questionView = document.getElementById('question-view');
+    const feedbackView = document.getElementById('feedback-view');
+    const resultsView = document.getElementById('results-view');
+    const counterEl = document.getElementById('counter');
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const feedbackBox = document.getElementById('feedback-box');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const explanationEl = document.getElementById('explanation');
+    const scoreEl = document.getElementById('score');
+
+    // Shuffle function (Fisher-Yates)
+    function shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function startQuiz() {
+        currentQuestions = shuffleArray(ALL_QUESTIONS);
+        currentIndex = 0;
+        score = 0;
+        showQuestionView();
+    }
+
+    function showQuestionView() {
+        uiState = 'question';
+        questionView.classList.remove('hidden');
+        feedbackView.classList.add('hidden');
+        resultsView.classList.add('hidden');
+
+        const q = currentQuestions[currentIndex];
+        counterEl.textContent = `Question ${currentIndex + 1} of ${currentQuestions.length}`;
+        questionEl.textContent = q.question;
+
+        optionsEl.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = `<span class="key-hint">${idx + 1}</span> ${opt}`;
+            btn.onclick = () => handleAnswer(idx);
+            optionsEl.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(selectedIndex) {
+        if (uiState !== 'question') return;
+        uiState = 'feedback';
+        const q = currentQuestions[currentIndex];
+        const isCorrect = (selectedIndex === q.correct);
+
+        if (isCorrect) score++;
+
+        questionView.classList.add('hidden');
+        feedbackView.classList.remove('hidden');
+
+        feedbackBox.className = `feedback-section ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`;
+        feedbackTitle.textContent = isCorrect ? 'Correct!' : 'Incorrect';
+        explanationEl.textContent = q.explanation;
+    }
+
+    function nextQuestion() {
+        currentIndex++;
+        if (currentIndex < currentQuestions.length) {
+            showQuestionView();
+        } else {
+            showResultsView();
+        }
+    }
+
+    function showResultsView() {
+        uiState = 'results';
+        questionView.classList.add('hidden');
+        feedbackView.classList.add('hidden');
+        resultsView.classList.remove('hidden');
+        scoreEl.textContent = `${score} / ${currentQuestions.length}`;
+    }
+
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+    document.getElementById('restart-btn').addEventListener('click', startQuiz);
+
+    document.addEventListener('keydown', (e) => {
+        if (uiState === 'question') {
+            if (['1', '2', '3', '4'].includes(e.key)) {
+                handleAnswer(parseInt(e.key) - 1);
+            }
+        } else if (uiState === 'feedback') {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                nextQuestion();
+            }
+        } else if (uiState === 'results') {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                startQuiz();
+            }
+        }
+    });
+
+    // Start on load
+    startQuiz();
+</script>
+</body>
+</html>
